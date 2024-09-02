@@ -6,7 +6,6 @@ local WHOLE_BODY_DETECTION_LIMIT = 729000 -- This is roughly the volume where Re
 -- LOCAL
 local Janitor = require(script.Parent.Janitor)
 local Enum_ = require(script.Parent.Enum)
-local Signal = require(script.Parent.Signal)
 local Tracker = require(script.Tracker)
 local CollectiveWorldModel = require(script.CollectiveWorldModel)
 local enum = Enum_.enums
@@ -413,7 +412,7 @@ function ZoneController.getTouchingZones(item, onlyActiveZones, recommendedDetec
 	local partToZoneDict = (onlyActiveZones and activePartToZone) or allPartToZone
 
 	local boundParams = OverlapParams.new()
-	boundParams.FilterType = Enum.RaycastFilterType.Whitelist
+	boundParams.FilterType = Enum.RaycastFilterType.Include
 	boundParams.MaxParts = #partsTable
 	boundParams.FilterDescendantsInstances = partsTable
 
@@ -442,11 +441,10 @@ function ZoneController.getTouchingZones(item, onlyActiveZones, recommendedDetec
 	if totalRemainingBoundParts > 0 then
 		
 		local preciseParams = OverlapParams.new()
-		preciseParams.FilterType = Enum.RaycastFilterType.Whitelist
+		preciseParams.FilterType = Enum.RaycastFilterType.Include
 		preciseParams.MaxParts = totalRemainingBoundParts
 		preciseParams.FilterDescendantsInstances = boundPartsThatRequirePreciseChecks
 
-		local character = item
 		for _, bodyPart in pairs(bodyPartsToCheck) do
 			local endCheck = false
 			if not bodyPart:IsA("BasePart") or (itemIsCharacter and Tracker.bodyPartsToIgnore[bodyPart.Name]) then

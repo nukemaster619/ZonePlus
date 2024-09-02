@@ -3,7 +3,6 @@ local players = game:GetService("Players")
 local runService = game:GetService("RunService")
 local heartbeat = runService.Heartbeat
 local localPlayer = runService:IsClient() and players.LocalPlayer
-local replicatedStorage = game:GetService("ReplicatedStorage")
 local httpService = game:GetService("HttpService")
 local Enum_ = require(script.Enum)
 local enum = Enum_.enums
@@ -269,7 +268,6 @@ function Zone:_update()
 
 	local containerType = typeof(container)
 	local holders = {}
-	local INVALID_TYPE_WARNING = "The zone container must be a model, folder, basepart or table!"
 	if containerType == "table" then
 		for _, part in pairs(container) do
 			if part:IsA("BasePart") then
@@ -295,7 +293,9 @@ function Zone:_update()
 	
 	local allZonePartsAreBlocksNew = true
 	for _, zonePart in pairs(zoneParts) do
-		local success, shapeName = pcall(function() return zonePart.Shape.Name end)
+		local _, shapeName = pcall(function()
+			return zonePart.Shape.Name
+		end)
 		if shapeName ~= "Block" then
 			allZonePartsAreBlocksNew = false
 		end
@@ -352,7 +352,7 @@ function Zone:_update()
 		end), "Disconnect")
 	end
 	local containerEvents = {"ChildAdded", "ChildRemoved"}
-	for _, holder in pairs(holders) do
+	for _, _ in pairs(holders) do
 		for _, event in pairs(containerEvents) do
 			self._updateConnections:add(self.container[event]:Connect(function(child)
 				if child:IsA("BasePart") then
@@ -532,7 +532,9 @@ local partShapeActions = {
 	end,
 }
 function Zone:_getRegionConstructor(part, overlapParams)
-	local success, shapeName = pcall(function() return part.Shape.Name end)
+	local success, shapeName = pcall(function()
+		return part.Shape.Name
+	end)
 	local methodName, args
 	if success and self.allZonePartsAreBlocks then
 		local action = partShapeActions[shapeName]
@@ -635,7 +637,7 @@ end
 function Zone:_getAll(trackerName)
 	ZoneController.updateDetection(self)
 	local itemsArray = {}
-	local zonesAndOccupants = ZoneController._getZonesAndItems(trackerName, {self = true}, self.volume, false, self._currentEnterDetection)
+	local zonesAndOccupants = ZoneController._getZonesAndItems(trackerName, {[self] = true}, self.volume, false, self._currentEnterDetection)
 	local occupantsDict = zonesAndOccupants[self]
 	if occupantsDict then
 		for item, _ in pairs(occupantsDict) do

@@ -1,14 +1,9 @@
 [package]
-name = "1foreverhd/zoneplus"
+name = "nukemaster619/zoneplus"
 description = "Construct dynamic zones that utilise region checking, raycasting and the new BasePart.CanTouch property to effectively determine players and parts within their boundaries."
 license = "MIT"
 realm = "shared"
 registry = "https://github.com/UpliftGames/wally-index"
-version = "3.2.0"
-exclude = [
-	"docs", ".moonwave", "test",
-	"ZonePlus.rbxm", "ZonePlus.rbxmx",
-	".gitignore", "foreman.toml",
-]
+version = "3.2.5"
 
 [dependencies]
